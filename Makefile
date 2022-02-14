@@ -1,7 +1,7 @@
 DOCKER ?= docker
 INPUT_RELEASE_VERSION ?= 0.4.0
 RUST_VERSION ?= 1.58.1
-REPO ?= rustserverless/lambda-rust
+REPO ?= mijn-boekingen/lambda-rust
 TAG ?= latest
 
 publish: build
@@ -36,7 +36,7 @@ debug: build
 		--entrypoint=/bin/bash \
 		$(REPO):$(TAG)
 
-check: 
+check:
 	$(DOCKER) run --rm \
 		--entrypoint=/usr/local/bin/latest.sh \
 		$(REPO)
