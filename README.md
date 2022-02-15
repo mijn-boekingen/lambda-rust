@@ -11,7 +11,7 @@ This provides a build environment, consistent with your target execution environ
 Tags for this docker image follow the naming convention `ghcr.io/mijn-boekingen/lambda-rust:{version}-rust-{rust-stable-version}`
 where `{rust-stable-version}` is a stable version of rust.
 
-You can find a list of available docker tags [here](https://github.com/orgs/mijn-boekingen/packages?repo_name=lambda-rust)
+You can find a list of available docker tags [here](https://github.com/mijn-boekingen/lambda-rust/pkgs/container/lambda-rust)
 
 > 💡 If you don't find the version you're looking for, please [open a new github issue](https://github.com/mijn-boekingen/lambda-rust/issues/new?title=I%27m%20looking%20for%20version%20xxx) to publish one
 
