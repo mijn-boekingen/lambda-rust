@@ -31,7 +31,7 @@ jobs:
 
   publish:
     needs: [test]
-    if: github.repository == 'rust-serverless/lambda-rust'
+    if: github.repository == 'mijn-boekingen/lambda-rust'
     runs-on: ubuntu-latest
 
     steps:

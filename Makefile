@@ -39,4 +39,4 @@ debug: build
 check:
 	$(DOCKER) run --rm \
 		--entrypoint=/usr/local/bin/latest.sh \
-		$(REPO)
+		$(REPO)-arm64
