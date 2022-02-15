@@ -1,23 +1,23 @@
-# AWS Lambda [Rust](https://www.rust-lang.org/) docker builder 🐑 🦀 🐳 [![Build Status](https://github.com/rust-serverless/lambda-rust/workflows/Main/badge.svg)](https://github.com/rust-serverless/lambda-rust/actions)
+# AWS Lambda [Rust](https://www.rust-lang.org/) ARM64 Docker Builder [![Build Status](https://github.com/mijn-boekingen/lambda-rust/workflows/Main/badge.svg)](https://github.com/mijn-boekingen/lambda-rust/actions)
 
-## 🤔 about
+## 🤔 About
 
-This docker image extends AWS Lambda `provided.al2` runtime environment, and installs [rustup](https://rustup.rs/) and the *stable* rust toolchain.
+This docker image extends AWS Lambda `provided.al2-arm64` runtime environment, and installs [rustup](https://rustup.rs/) and the *stable* rust toolchain.
 
 This provides a build environment, consistent with your target execution environment for predictable results.
 
-## 📦 install
+## 📦 Install
 
-Tags for this docker image follow the naming convention `rustserverless/lambda-rust:{version}-rust-{rust-stable-version}`
+Tags for this docker image follow the naming convention `ghcr.io/mijn-boekingen/lambda-rust:{version}-rust-{rust-stable-version}`
 where `{rust-stable-version}` is a stable version of rust.
 
-You can find a list of available docker tags [here](https://hub.docker.com/r/rustserverless/lambda-rust/tags)
+You can find a list of available docker tags [here](https://github.com/orgs/mijn-boekingen/packages?repo_name=lambda-rust)
 
-> 💡 If you don't find the version you're looking for, please [open a new github issue](https://github.com/rust-serverless/lambda-rust/issues/new?title=I%27m%20looking%20for%20version%20xxx) to publish one
+> 💡 If you don't find the version you're looking for, please [open a new github issue](https://github.com/mijn-boekingen/lambda-rust/issues/new?title=I%27m%20looking%20for%20version%20xxx) to publish one
 
-You can also depend directly on `rustserverless/lambda-rust:latest` for the most recently published version.
+You can also depend directly on `ghcr.io/mijn-boekingen/lambda-rust:latest` for the most recently published version.
 
-## 🤸 usage
+## 🤸 Usage
 
 The default docker entrypoint will build a packaged release optimized version of your Rust artifact under `target/lambda/release` to
 isolate the lambda specific build artifacts from your host-local build artifacts.
@@ -30,10 +30,9 @@ You will want to volume mount `/code` to the directory containing your cargo pro
 
 You can pass additional flags to `cargo`, the Rust build tool, by setting the `CARGO_FLAGS` docker env variable.
 
-Unzipped `boostrap` and `boostrap.debug` files are always available
-under `target/lambda/${PROFILE}/output/${BIN}` dir. If you want only them and don't
-need a `.zip` archive (e.g. for when running lambdas locally) pass `-e PACKAGE=false`
-flag. More on that in [local testing](#-local-testing).
+Unzipped `boostrap` and `boostrap.debug` files are always available under `target/lambda/${PROFILE}/output/${BIN}` dir.
+If you want only them and don't need a `.zip` archive (e.g. for when running lambdas locally) pass `-e PACKAGE=false` flag.
+More on that in [local testing](#-local-testing).
 
 A typical docker run might look like the following.
 
@@ -43,7 +42,7 @@ $ docker run --rm \
     -v ${PWD}:/code \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
-    rustserverless/lambda-rust
+    ghcr.io/mijn-boekingen/lambda-rust
 ```
 
 > 💡 The -v (volume mount) flags for `/cargo/{registry,git}` are optional but when supplied, provides a much faster turn around when doing iterative development
@@ -67,24 +66,24 @@ $ docker run --rm \
     -v ${PWD}:/code \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
-    rustserverless/lambda-rust
+    ghcr.io/mijn-boekingen/lambda-rust
 ```
 
 For more custom codebases, the '-w' argument can be used to override the working directory.
 This can be especially useful when using path dependencies for local crates.
 
-```sh
+```diff
 $ docker run --rm \
     -u $(id -u):$(id -g) \
     -v ${PWD}/lambdas/mylambda:/code/lambdas/mylambda \
     -v ${PWD}/libs/mylib:/code/libs/mylib \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
-    -w /code/lambdas/mylambda \
-    rustserverless/lambda-rust
++   -w /code/lambdas/mylambda \
+    ghcr.io/mijn-boekingen/lambda-rust
 ```
 
-## ⚓ using hooks
+## ⚓ Using hooks
 
 You can leverage hooks provided in the image to customize certain parts of the build process.
 Hooks are shell scripts that are invoked if they exist, so you can customize the process. The following hooks exist:
@@ -97,18 +96,19 @@ The hooks' names are predefined and must be placed in a directory `.lambda-rust`
 
 You can take a look at an example [here](./tests/test-func-with-hooks).
 
-## 🔬 local testing
+## 🔬 Local testing
 
-Once you've built a Rust lambda function artifact, the `provided.al2` runtime expects
-deployments of that artifact to be named "**bootstrap**". The `lambda-rust` docker image
-builds a zip file, named after the binary, containing your binary file renamed to "bootstrap" for you, but zip file creation is unnecessary for local development.
+Once you've built a Rust lambda function artifact, the `provided.al2-arm64` runtime expects deployments of that artifact to be named "**bootstrap**".
+The `lambda-rust` docker image builds a zip file, named after the binary, containing your binary file renamed to "bootstrap" for you,
+but zip file creation is unnecessary for local development.
 
-In order to prevent the creation of an intermediate `.zip` artifact when testing your lambdas locally, pass `-e PACKAGE=false` during the build. After that the necessary
-output (not zipped) is available under `target/lambda/{profile}/output/{your-lambda-binary-name}` dir.
+In order to prevent the creation of an intermediate `.zip` artifact when testing your lambdas locally, pass `-e PACKAGE=false` during the build.
+After that the necessary output (not zipped) is available under `target/lambda/{profile}/output/{your-lambda-binary-name}` dir.
 You will see both `bootstrap` and `bootstrap.debug` files there.
+
 > **⚠️ Note:** `PACKAGE=false` prevents `package` hook from running.
 
-You can then invoke this bootstrap executable for the `provided.al2` AWS lambda runtime with a one off container.
+You can then invoke this bootstrap executable for the `provided.al2-arm64` AWS lambda runtime with a one off container.
 
 ```sh
 # Build your function skipping the zip creation step
@@ -120,29 +120,29 @@ docker run \
     -v ${PWD}:/code \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
-    rustserverless/lambda-rust
+    ghcr.io/mijn-boekingen/lambda-rust
 
 # Build a container with your binary as the runtime
 
 $ docker build -t mylambda -f- . <<EOF
-FROM public.ecr.aws/lambda/provided:al2
+FROM public.ecr.aws/lambda/provided:al2-arm64
 COPY bootstrap /var/runtime
 CMD [ "function.handler" ]
 EOF
 
 # start a container based on your image
 $ docker run \
-        --name lambda \
-        --rm \
-        -p 9000:8080 \
-        -d mylambda
+    --name lambda \
+    --rm \
+    -p 9000:8080 \
+    -d mylambda
 
 # provide an event payload (in event.json" by http POST to the container
 
 $ curl -X POST \
-        -H "Content-Type: application/json" \
-        -d "@event.json" \
-        "http://localhost:9000/2015-03-31/functions/function/invocations"
+    -H "Content-Type: application/json" \
+    -d "@event.json" \
+    "http://localhost:9000/2015-03-31/functions/function/invocations"
 
 # Stop the container
 $ docker container stop lambda
@@ -150,7 +150,7 @@ $ docker container stop lambda
 
 You may submit multiple events to the same container.
 
-## 🤸🤸 usage via cargo aws-lambda subcommand
+## 🤸🤸 Usage via cargo aws-lambda subcommand
 
 A third party cargo subcommand exists to compile your code into a zip file and deploy it. This comes with only
 rust and docker as dependencies.
