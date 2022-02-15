@@ -27,7 +27,7 @@ jobs:
         env:
           RUST_VERSION: nightly
           TAG: nightly
-          IMAGE: 'ghcr.io/mijn-boekingen/lambda-rust:nightly'
+          IMAGE: 'ghcr.io/mijn-boekingen/lambda-rust:nightly-arm64'
 
   publish:
     needs: [test]

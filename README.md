@@ -15,7 +15,7 @@ You can find a list of available docker tags [here](https://github.com/orgs/mijn
 
 > 💡 If you don't find the version you're looking for, please [open a new github issue](https://github.com/mijn-boekingen/lambda-rust/issues/new?title=I%27m%20looking%20for%20version%20xxx) to publish one
 
-You can also depend directly on `ghcr.io/mijn-boekingen/lambda-rust:latest` for the most recently published version.
+You can also depend directly on `ghcr.io/mijn-boekingen/lambda-rust:latest-arm64` for the most recently published version.
 
 ## 🤸 Usage
 
@@ -42,7 +42,7 @@ $ docker run --rm \
     -v ${PWD}:/code \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
-    ghcr.io/mijn-boekingen/lambda-rust
+    ghcr.io/mijn-boekingen/lambda-rust:latest-arm64
 ```
 
 > 💡 The -v (volume mount) flags for `/cargo/{registry,git}` are optional but when supplied, provides a much faster turn around when doing iterative development
@@ -66,7 +66,7 @@ $ docker run --rm \
     -v ${PWD}:/code \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
-    ghcr.io/mijn-boekingen/lambda-rust
+    ghcr.io/mijn-boekingen/lambda-rust:latest-arm64
 ```
 
 For more custom codebases, the '-w' argument can be used to override the working directory.
@@ -80,7 +80,7 @@ $ docker run --rm \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
 +   -w /code/lambdas/mylambda \
-    ghcr.io/mijn-boekingen/lambda-rust
+    ghcr.io/mijn-boekingen/lambda-rust:latest-arm64
 ```
 
 ## ⚓ Using hooks
@@ -120,7 +120,7 @@ docker run \
     -v ${PWD}:/code \
     -v ${HOME}/.cargo/registry:/cargo/registry \
     -v ${HOME}/.cargo/git:/cargo/git \
-    ghcr.io/mijn-boekingen/lambda-rust
+    ghcr.io/mijn-boekingen/lambda-rust:latest-arm64
 
 # Build a container with your binary as the runtime
 
