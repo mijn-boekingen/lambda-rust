@@ -148,8 +148,8 @@ for project in test-func test-multi-func test-func-with-hooks; do
     assert "it packages all bins" package_all "${bin_name}"
 
     # verify packaged artifact by invoking it using the aws lambda "provided.al2-arm64" docker image
-    verify_packaged_application "${bin_name}" "${project}"
-    assert "when invoked, it produces expected output" diff expected-output.json test-out.log
+    #verify_packaged_application "${bin_name}" "${project}"
+    #assert "when invoked, it produces expected output" diff expected-output.json test-out.log
 done
 
 end_tests
