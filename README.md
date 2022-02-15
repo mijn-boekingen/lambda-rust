@@ -1,4 +1,4 @@
-# AWS Lambda [Rust](https://www.rust-lang.org/) ARM64 Docker Builder [![Build Status](https://github.com/mijn-boekingen/lambda-rust/workflows/Main/badge.svg)](https://github.com/mijn-boekingen/lambda-rust/actions)
+# [AWS Lambda](https://aws.amazon.com/lambda/) [Rust](https://www.rust-lang.org/) ARM64 Docker Builder [![Build Status](https://github.com/mijn-boekingen/lambda-rust/workflows/Main/badge.svg)](https://github.com/mijn-boekingen/lambda-rust/actions)
 
 ## 🤔 About
 
