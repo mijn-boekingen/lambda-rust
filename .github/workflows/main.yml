@@ -61,9 +61,9 @@ jobs:
         shell: bash
         run: make build-arm64
 
-      - name: Test Image
-        shell: bash
-        run: make test
+      # - name: Test Image
+      #   shell: bash
+      #   run: make test
 
   publish:
     needs: [scan, test]
