@@ -91,14 +91,14 @@ verify_packaged_application() {
 
     if [ "$PROJECT" = "${HOOKS}" ]; then
         docker build -t mylambda:"${TSFRACTION}" -f- . <<EOF
-FROM public.ecr.aws/lambda/provided:al2
+FROM public.ecr.aws/lambda/provided:al2-arm64
 COPY bootstrap ${LAMBDA_RUNTIME_DIR}
 COPY output.log ${LAMBDA_TASK_DIR}
 CMD [ "function.handler" ]
 EOF
     else
         docker build -t mylambda:"${TSFRACTION}" -f- . <<EOF
-FROM public.ecr.aws/lambda/provided:al2
+FROM public.ecr.aws/lambda/provided:al2-arm64
 COPY bootstrap ${LAMBDA_RUNTIME_DIR}
 CMD [ "function.handler" ]
 EOF
@@ -147,7 +147,7 @@ for project in test-func test-multi-func test-func-with-hooks; do
 
     assert "it packages all bins" package_all "${bin_name}"
 
-    # verify packaged artifact by invoking it using the aws lambda "provided.al2" docker image
+    # verify packaged artifact by invoking it using the aws lambda "provided.al2-arm64" docker image
     verify_packaged_application "${bin_name}" "${project}"
     assert "when invoked, it produces expected output" diff expected-output.json test-out.log
 done
