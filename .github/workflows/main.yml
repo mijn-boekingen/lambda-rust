@@ -31,7 +31,7 @@ jobs:
           REPO: ${{ github.repository }}
 
       - name: Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.2.4
+        uses: aquasecurity/trivy-action@0.7.1
         with:
           image-ref: '${{ env.docker_repo }}:latest-arm64'
           format: 'table'
